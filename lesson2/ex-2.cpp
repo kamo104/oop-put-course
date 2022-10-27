@@ -14,9 +14,9 @@ class KeyChain{
     std::vector<Key> myKeys(){
         return this->keys;
     }
-    Key getHomeKey(std::string name){
+    Key homeKey(std::string name){
         for(int i=0;i<keys.size();i++){
-            if(keys[i].name=="home") return keys[i];
+            if(keys[i].name==name) return keys[i];
         }
         return keys[0];
     }
