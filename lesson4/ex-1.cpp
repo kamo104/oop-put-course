@@ -3,34 +3,43 @@
 #include <string>
 #include <tuple>
 
-struct RGBVal{
+class RGBVal{
     char r;
     char g; 
     char b;
-};
-
-
-class Vector3D{
-    float values[2];
     public:
-    float x(){
-        return this->values[0];
-    }
-    float y(){
-        return this->values[1];
-    }
-    float z(){
-        return this->values[1];
+    RGBVal& operator*(float val){
+        RGBVal v;
+        v.r = this->r*val;
+        v.g = this->g*val;
+        v.b = this->b*val;
+        return v;
     }
 };
 
-class Vector2D{
-    float values[2];
+template<class T>
+class Vector3{
+    T values[3];
     public:
-    float x(){
+    T x(){
         return this->values[0];
     }
-    float y(){
+    T y(){
+        return this->values[1];
+    }
+    T z(){
+        return this->values[2];
+    }
+};
+
+template<class T>
+class Vector2{
+    T values[2];
+    public:
+    T x(){
+        return this->values[0];
+    }
+    T y(){
         return this->values[1];
     }
 
@@ -46,35 +55,42 @@ class Voxel{
     Voxel(RGBVal){}
 };
 
-namespace Build{
-    class Map{
-        // std::vector<std::vector<std::vector<Voxel>>> map;
-        public:
-        int shader;
-        virtual Voxel at(Vector3D){} // read only
-        virtual Map ChangeColorWithShader(Vector3D, RGBVal){
 
-        }
+namespace Build{
+    template<class T>
+    class Map{
+        public: //
+        int shader;
+        virtual Voxel at(Vector3<T>) const = 0; // read only
+        virtual Map* ChangeColorWithShader(Vector3<T>, RGBVal)const = 0 ;
     };
 }
 
 
-class Map3D : Build::Map{
+class Map3D : Build::Map<float>{
     std::vector<std::vector<std::vector<Voxel>>> map;
+
     public:
-    Voxel at(Vector3D position){ 
+    Voxel at(Vector3<float> position){ 
         return map[position.x()][position.y()][position.z()].copy();
     }
-    void ChangeColorWithShader(Vector3D position, RGBVal color){
+    Map* ChangeColorWithShader(Vector3<float> position, RGBVal color){
         this->map[position.x()][position.y()][position.z()].color = color*this->shader;
+        return this;
     }
 };
 
-class Map2D : Build::Map{
+class Map2D : Build::Map<float>{
     std::vector<std::vector<Voxel>> map;
+
     public:
-    Voxel at(Vector3D position){
+    Voxel at(Vector3<float> position){
         return map[position.x()][position.y()].copy();
+    }
+
+    Map* ChangeColorWithShader(Vector2<float> position, RGBVal color){
+        this->map[position.x()][position.y()].color = color*this->shader;
+        return this;
     }
 };
 
