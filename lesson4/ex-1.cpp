@@ -59,28 +59,32 @@ class Voxel{
 namespace Build{
     template<class T>
     class Map{
-        public: //
-        int shader;
+        public: 
         virtual Voxel at(Vector3<T>) const = 0; // read only
-        virtual Map* ChangeColorWithShader(Vector3<T>, RGBVal)const = 0 ;
+        virtual Map* changeColorWithShader(Vector3<T>, RGBVal)const = 0 ;
     };
 }
 
 
 class Map3D : Build::Map<float>{
+    float shader;
     std::vector<std::vector<std::vector<Voxel>>> map;
 
     public:
     Voxel at(Vector3<float> position){ 
         return map[position.x()][position.y()][position.z()].copy();
     }
-    Map* ChangeColorWithShader(Vector3<float> position, RGBVal color){
+    Map* changeColorWithShader(Vector3<float> position, RGBVal color){
         this->map[position.x()][position.y()][position.z()].color = color*this->shader;
         return this;
+    }
+    Map3D(float shader){
+        this->shader = shader;
     }
 };
 
 class Map2D : Build::Map<float>{
+    float shader;
     std::vector<std::vector<Voxel>> map;
 
     public:
@@ -88,9 +92,12 @@ class Map2D : Build::Map<float>{
         return map[position.x()][position.y()].copy();
     }
 
-    Map* ChangeColorWithShader(Vector2<float> position, RGBVal color){
+    Map* changeColorWithShader(Vector2<float> position, RGBVal color){
         this->map[position.x()][position.y()].color = color*this->shader;
         return this;
+    }
+    Map2D(float shader){
+        this->shader = shader;
     }
 };
 
