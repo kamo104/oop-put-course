@@ -56,6 +56,10 @@ int main(){
     catch(std::invalid_argument e){
         std::cout<< e.what();
     }
+    catch(std::logic_error e){
+        std::cout<< e.what();
+    }
+
     
     
     return 0;
