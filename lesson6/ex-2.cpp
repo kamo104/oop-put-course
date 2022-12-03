@@ -21,30 +21,18 @@ class Logarithm : Number{
             double result =log(this->argument)/log(this->base);
         }
         catch(std::logic_error e){
-            std::cout << e.what() << "\n";
+            throw(std::logic_error("Division by zero in calculation"));
         }
         
 
         return result;
     }
     Logarithm(double base, double argument){
-        try{
-            if(argument<0){
-                throw std::domain_error("argument");
-            }
-            if(base<=1){
-                throw std::domain_error("base");
-            }
-        }
-        catch(std::domain_error ex){
-            std::string s(ex.what()); 
-            s.append(" out of domain");
+        if(argument<0) throw std::invalid_argument("argument out of function domain");
+        if(base<=1) throw std::invalid_argument("base out of function domain");
 
-            throw std::invalid_argument(s);
-        }
         this->base = base;
         this->argument = argument;
-        
     }
 };
 
@@ -57,7 +45,7 @@ int main(){
         std::cout<< e.what();
     }
     catch(std::logic_error e){
-        std::cout<< e.what();
+        return 1;
     }
 
     
