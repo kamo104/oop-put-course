@@ -6,17 +6,19 @@
 
 class NumberCollection{
     private:
-    std::vector<int> numbers;
+    std::vector<int> numbers={};
     public:
     int min(){
         if(numbers.size()<0)return 0; //should raise an exception but I have no time
         int minVal=numbers.at(0);
         for(auto number:numbers) number<minVal?minVal=number:minVal=minVal;
+        return minVal;
     }
     int max(){
         if(numbers.size()<0)return 0; //should raise an exception but I have no time
         int maxVal=numbers.at(0);
-        for(auto number:numbers) number<maxVal?maxVal=number:maxVal=maxVal;
+        for(auto number:numbers) number>maxVal?maxVal=number:maxVal=maxVal;
+        return maxVal;
     }
     double average(){
         int sum=0;
@@ -34,6 +36,6 @@ class NumberCollection{
 };
 int main(){
     NumberCollection numbers(1,2);
-    numbers.max();
+    std::cout<<numbers.min()<<"\n";
     return 0;
 }
