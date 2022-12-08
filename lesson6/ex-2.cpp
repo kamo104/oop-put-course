@@ -29,7 +29,7 @@ class Logarithm : Number{
     }
     Logarithm(double base, double argument){
         if(argument<0) throw std::invalid_argument("argument out of function domain");
-        if(base<=1) throw std::invalid_argument("base out of function domain");
+        if(base==1 || base <=0) throw std::invalid_argument("base out of function domain");
 
         this->base = base;
         this->argument = argument;
