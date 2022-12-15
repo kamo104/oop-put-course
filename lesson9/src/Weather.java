@@ -1,4 +1,3 @@
-
 import java.time.LocalDateTime;
 
 public class Weather {
@@ -9,6 +8,7 @@ public class Weather {
         this.forecast = forecast;
     }
     public String temperatureNow(){
-        return String.valueOf(this.forecast.temperature(LocalDateTime.now(), this.temperatureScale))+" "+this.temperatureScale;
+        String oputput = Float.toString(this.forecast.temperature(LocalDateTime.now(), this.temperatureScale));
+        return oputput+" "+this.temperatureScale;
     }
 }

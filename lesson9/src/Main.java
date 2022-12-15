@@ -3,8 +3,7 @@ public class Main {
         
         Forecast forecast = new Forecast.Fake();
         Weather weather = new Weather(forecast, "Celcius");
-        System.out.println(weather.temperatureNow());
-        // assert 
-        assert "0 Celcius".equals(weather.temperatureNow());
+        
+        assert "0.0 Celcius".equals(weather.temperatureNow());
     }
 }
