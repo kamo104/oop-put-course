@@ -41,16 +41,24 @@ class Main{
         appointmentInfo.patient = patientRegister.patient(0);
 
         // finally confirm the planned appointment
-        boolean success = appointmentPlanner.planAppointment(appointmentInfo, "Appointment Note");
+        boolean success = appointmentPlanner.planAppointment(appointmentInfo, "First appointment note");
+
+        // plan second appointment
+        appointmentInfo = appointmentPlanner.nearestAppointment();
+        appointmentInfo.patient = patientRegister.patient(2);
+        success = appointmentPlanner.planAppointment(appointmentInfo, "Second appointment note");
 
         DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
         // System.out.println(appointmentInfo.doctor.name());
         ArrayList<Appointment> plannedAppointments = appointmentPlanner.plannedAppointments();
+
+        int i=1;
         for(Appointment appointment : plannedAppointments){
-            System.out.println();
+            System.out.println(Integer.toString(i++) + ".");
             System.out.println("Doctor's name: " + appointment.doctor().name());
             System.out.println("Patient's name: " + appointment.patient().name());
             System.out.println("Appointment date: " + appointment.date().format(formatter));
+            System.out.println("Appointment note: " + appointment.note());
         }
         
     }

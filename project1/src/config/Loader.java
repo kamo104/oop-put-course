@@ -62,7 +62,14 @@ public class Loader {
 
 
             Calendar calendar = new Calendar();
-            for(int j=0;j<9;j++) calendar.addEvent(new WorkEvent(LocalDateTime.now().plus(j*86400, ChronoUnit.SECONDS)));
+            LocalDateTime startingDate = LocalDateTime.of(
+                LocalDateTime.now().getYear(), 
+                LocalDateTime.now().getMonth(), 
+                LocalDateTime.now().getDayOfMonth()+1, 
+                8, 
+                0
+            );
+            for(int j=0;j<9;j++) calendar.addEvent(new WorkEvent(startingDate.plus(j*86400, ChronoUnit.SECONDS)));
 
             doctors.add(new Doctor(name, id, phoneNumber, calendar));
         }   

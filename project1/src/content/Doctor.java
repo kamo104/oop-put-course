@@ -31,9 +31,12 @@ public class Doctor implements Person{
     }
     
     public AppointmentInfo nextAvailableAppointment(LocalDateTime date){
+        date = date.minusMinutes(date.getMinute());
+        date = date.minusSeconds(date.getSecond());
+        date = date.minusNanos(date.getNano());
 
         //find next open appointment window
-        while(this.isAvailable(date = date.plus(Constants.searchWindow, ChronoUnit.SECONDS)) == false);
+        while(this.isAvailable(date) == false) date = date.plus(Constants.searchWindow, ChronoUnit.SECONDS);
         
         return new AppointmentInfo(date, Constants.appointmentLength, this, null);
     }
@@ -61,13 +64,13 @@ public class Doctor implements Person{
 
         // 2. if his work starts later than the date
         if(
-            workOnThatDate.date().toEpochSecond(ZoneId.systemDefault().getRules().getOffset(workOnThatDate.date())) > 
+            workOnThatDate.date().toEpochSecond(ZoneId.systemDefault().getRules().getOffset(workOnThatDate.date())) >= 
             date.toEpochSecond(ZoneId.systemDefault().getRules().getOffset(date))
         ) return false;
 
         // 3. if his work ends before the event ends
         if(
-            workOnThatDate.date().toEpochSecond(ZoneId.systemDefault().getRules().getOffset(workOnThatDate.date())) + workOnThatDate.duration() < 
+            workOnThatDate.date().toEpochSecond(ZoneId.systemDefault().getRules().getOffset(workOnThatDate.date())) + workOnThatDate.duration() <= 
             date.toEpochSecond(ZoneId.systemDefault().getRules().getOffset(date)) + eventDuration
         ) return false;
 

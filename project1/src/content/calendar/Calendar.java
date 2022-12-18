@@ -8,8 +8,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 import content.calendar.events.Event;
-import content.constants.Constants;
-
 
 public class Calendar {
 
@@ -31,8 +29,8 @@ public class Calendar {
             
             // case 1: event starts later than the startDate and before the endDate
             // case 2: event start sooner than the startDate but ends after it
-            if(startDateEpochSeconds < eventStartEpochSeconds && endDateEpochSeconds > eventStartEpochSeconds) events.add(ev);
-            else if(startDateEpochSeconds > eventStartEpochSeconds && startDateEpochSeconds < eventEndEpochSeconds) events.add(ev);
+            if(startDateEpochSeconds <= eventStartEpochSeconds && endDateEpochSeconds >= eventStartEpochSeconds) events.add(ev);
+            else if(startDateEpochSeconds >= eventStartEpochSeconds && startDateEpochSeconds <= eventEndEpochSeconds) events.add(ev);
         }
         return events;
     }
@@ -48,7 +46,6 @@ public class Calendar {
     }
     public Calendar(Event event){
         this.events.add(event);
-        this.events = events;
     }
 
 }
