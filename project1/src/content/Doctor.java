@@ -36,7 +36,10 @@ public class Doctor implements Person{
         date = date.minusNanos(date.getNano());
 
         //find next open appointment window
-        while(this.isAvailable(date) == false) date = date.plus(Constants.searchWindow, ChronoUnit.SECONDS);
+        while(this.isAvailable(date) == false){
+            
+            date = date.plus(Constants.searchWindow, ChronoUnit.SECONDS);
+        } 
         
         return new AppointmentInfo(date, Constants.appointmentLength, this, null);
     }
@@ -45,8 +48,6 @@ public class Doctor implements Person{
     }
 
     private boolean isAvailableOnDate(LocalDateTime date, long eventDuration){
-        // long eventDuration = Constants.appointmentLength;
-        // if(appointmentDuration.length>0) eventDuration = appointmentDuration[0];
 
         // if at work and no patient coliding
         ArrayList<Event> eventsOnTimeFrame = this.calendar.duringDateFrame(date, date.plus(eventDuration, ChronoUnit.SECONDS));
@@ -64,13 +65,13 @@ public class Doctor implements Person{
 
         // 2. if his work starts later than the date
         if(
-            workOnThatDate.date().toEpochSecond(ZoneId.systemDefault().getRules().getOffset(workOnThatDate.date())) >= 
+            workOnThatDate.date().toEpochSecond(ZoneId.systemDefault().getRules().getOffset(workOnThatDate.date())) >
             date.toEpochSecond(ZoneId.systemDefault().getRules().getOffset(date))
         ) return false;
 
         // 3. if his work ends before the event ends
         if(
-            workOnThatDate.date().toEpochSecond(ZoneId.systemDefault().getRules().getOffset(workOnThatDate.date())) + workOnThatDate.duration() <= 
+            workOnThatDate.date().toEpochSecond(ZoneId.systemDefault().getRules().getOffset(workOnThatDate.date())) + workOnThatDate.duration() <=
             date.toEpochSecond(ZoneId.systemDefault().getRules().getOffset(date)) + eventDuration
         ) return false;
 
