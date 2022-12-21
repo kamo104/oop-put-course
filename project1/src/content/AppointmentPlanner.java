@@ -66,6 +66,8 @@ public class AppointmentPlanner {
             if(doctor.id()!=appointmentInfo.doctor.id()) continue;
 
             Appointment appointment = new Appointment(appointmentInfo.date, appointmentInfo.duration, doctor, appointmentInfo.patient, note);
+            if(doctor.isAvailable(appointment.date()) == false) return false;
+            
             doctor.scheduleEvent(appointment);
             return true;
         }
