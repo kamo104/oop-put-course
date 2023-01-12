@@ -13,9 +13,9 @@ int main(){
     
     std::ifstream words("words.txt");
     std::string word;
-    std::vector<std::string> wordList;
+    std::vector<Word> wordList;
     while(words >> word){   
-        wordList.push_back(word);
+        wordList.push_back(Word(word));
     }
 
     Shiritori game(wordList);

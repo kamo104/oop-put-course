@@ -3,29 +3,47 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <algorithm>
 
-// bak[e] -> [!e]agle == condition 1
-// no repeating one word == condition 2
+class Word final {
+    private:
+    std::string text;
+    std::string lowerCaseText;
 
+    public:
+    bool operator!=(Word otherWord){
+        return otherWord.lowerCase()!=this->lowerCase()?true:false;
+    }
+    bool operator==(Word otherWord){
+        return otherWord.lowerCase()==this->lowerCase()?true:false;
+    }
+    char operator[](size_t where){
+        return this->lowerCaseText[where];
+    }
 
+    std::string characters(){
+        return this->text;
+    }
+    std::string lowerCase(){
+        return this->lowerCaseText;
+    }
+    size_t size(){
+        return this->text.size();
+    }
+    Word(std::string text){
+        this->text = text;
 
-// has words
-// boolean game_over
-
-// instance methods:
-// play(string word) right word prints current words, wrong word prints "x does not start with letter 'a'"
-// restart() [restarts the game]
-
-// class Shiritori{
-//     public:
-//     virtual std::string play(std::string)=0;
-
-// };
+        // create a lowercase version
+        std::string temp(text);
+        std::transform(temp.begin(), temp.end(), temp.begin(), ::tolower);
+        this->lowerCaseText = temp;
+    }
+};
 
 
 class Shiritori final{
-    std::vector<std::string> words;
-    std::vector<std::string> possibleWords;
+    std::vector<Word> words;
+    std::vector<Word> possibleWords;
     bool useWordList=false;
     bool gameOver=false;
     
@@ -34,10 +52,10 @@ class Shiritori final{
     // returns -1 if it is invalid by the first condition
     // returns -2 if it is invalid by the second condition
     // returns -3 if it is not in the dictionary
-    int isWordValid(std::string word){
+    int isWordValid(Word word){
         if(this->useWordList){
             bool appeared=false;
-            for(std::string &temp:this->possibleWords){
+            for(Word &temp:this->possibleWords){
                 if(temp==word) appeared=true;
             }
             
@@ -46,10 +64,10 @@ class Shiritori final{
 
         if(this->words.size()<=0) return true;
 
-        std::string lastWord = this->words[this->words.size()-1];
+        Word lastWord = this->words[this->words.size()-1];
         
         bool wordRepeated=false;
-        for(std::string &temp:this->words) if (temp==word) wordRepeated = true;
+        for(Word &temp:this->words) if (temp==word) wordRepeated = true;
 
         if( wordRepeated==true ) return -2;
         if( lastWord[lastWord.size()-1]!=word[0] ) return -1;
@@ -97,9 +115,9 @@ class Shiritori final{
     }
     std::string printWords(){
         std::string output = "[";
-        for(std::string &word:this->words){
+        for(Word &word:this->words){
             
-            output.append(word);
+            output.append(word.characters());
             
             if(word!=this->words[this->words.size()-1])
             output.append(", ");
@@ -114,7 +132,7 @@ class Shiritori final{
     }
 
     Shiritori(){}
-    Shiritori(std::vector<std::string> possibleWords){
+    Shiritori(std::vector<Word> possibleWords){
         this->useWordList = true;
         this->possibleWords = possibleWords;
     }
